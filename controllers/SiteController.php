@@ -9,6 +9,7 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use app\models\Cats;
 
 class SiteController extends Controller
 {
@@ -141,5 +142,34 @@ class SiteController extends Controller
     public function actionAbout()
     {
         return $this->render('about');
+    }
+
+
+    public function actionNewsCats()
+    {
+        $cid=Yii::$app->request->get('edit');
+        $m=$cid? Cats::findOne($cid):new Cats();
+        if (!$m)
+            $m=new Cats();
+
+        
+        
+        if (Yii::$app->request->isPost  ){
+            $post=Yii::$app->request->post();
+            if ($m->todo($post,$post['act']))
+                return $this->redirect(['']);
+        }
+
+
+        $p=new \yii\data\ActiveDataProvider([
+            'query'=>\app\models\Cats::allCats(),
+            'pagination'=>[
+                'pageSize'=>30,
+            ],
+            'sort'=>[
+                'defaultOrder'=>['title'=>SORT_ASC],
+            ],
+        ]);
+        return $this->render('news-cats',['m'=>$m,'p'=>$p]);
     }
 }

@@ -42,6 +42,7 @@ AppAsset::register($this);
             //['label' => 'About', 'url' => ['/site/about']],
             //['label' => 'Contact', 'url' => ['/site/contact']],
             ['label'=>'Парсер','url'=>['/site/feeds-parser'],'visible'=>!Yii::$app->user->isGuest],
+            ['label'=>'Категории','url'=>['/site/news-cats'],'visible'=>!Yii::$app->user->isGuest],
             Yii::$app->user->isGuest ? (
                 ['label' => 'Вход', 'url' => ['/site/login']]
             ) : (
