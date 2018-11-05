@@ -16,6 +16,10 @@ $config = [
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
+        'session'=>[
+            'class'=>'yii\web\CacheSession',
+            'cache'=>'cache',
+        ],
         'log' => [
             'targets' => [
                 [

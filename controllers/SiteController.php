@@ -23,7 +23,7 @@ class SiteController extends Controller
                 'only' => ['logout'],
                 'rules' => [
                     [
-                        'actions' => ['logout'],
+                        'actions' => ['logout','feeds-parser'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -61,9 +61,26 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $p= new \yii\data\ActiveDataProvider([
+            'query'=>\app\models\NewsModel::getAllNews(),
+            'pagination'=>[
+                'pageSize'=>10,
+            ],
+        ]);
+        return $this->render('index',['p'=>$p]);
     }
 
+    /**
+        Добавление фидов .. 
+    */
+    public function actionFeedsParser()
+    {
+        $m=new \app\models\ParserConfigurator();
+        if (Yii::$app->request->isPost && $m->saveConfig(Yii::$app->request->post())){
+            return $this->refresh();
+        }
+        return $this->render('parser-config',['m'=>$m]);
+    }
     /**
      * Login action.
      *
